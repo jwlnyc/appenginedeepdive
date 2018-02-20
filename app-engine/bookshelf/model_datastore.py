@@ -25,10 +25,8 @@ def init_app(app):
 
 
 # [START model]
-class Book(ndb.Model):
-    author = ndb.StringProperty()
-    description = ndb.StringProperty(indexed=False)
-    publishedDate = ndb.StringProperty()
+class Album(ndb.Model):
+    artist = ndb.StringProperty()
     title = ndb.StringProperty()
 # [END model]
 
@@ -48,13 +46,11 @@ def from_datastore(entity):
         return None
     if isinstance(entity, builtin_list):
         entity = entity.pop()
-    book = {}
-    book['id'] = entity.key.id()
-    book['author'] = entity.author
-    book['description'] = entity.description
-    book['publishedDate'] = entity.publishedDate
-    book['title'] = entity.title
-    return book
+    album = {}
+    album['id'] = entity.key.id()
+    album['artist'] = entity.artist
+    album['title'] = entity.title
+    return album
 # [END from_datastore]
 
 
@@ -63,7 +59,7 @@ def from_datastore(entity):
 def list(limit=10, cursor=None):
     if cursor:
         cursor = Cursor(urlsafe=cursor)
-    query = Book.query().order(Book.title)
+    query = Album.query().order(Album.title)
     entities, cursor, more = query.fetch_page(limit, start_cursor=cursor)
     entities = builtin_list(map(from_datastore, entities))
     return entities, cursor.urlsafe() if len(entities) == limit else None
@@ -72,8 +68,8 @@ def list(limit=10, cursor=None):
 
 # [START read]
 def read(id):
-    book_key = ndb.Key('Book', int(id))
-    results = book_key.get()
+    album_key = ndb.Key('Album', int(id))
+    results = album_key.get()
     return from_datastore(results)
 # [END read]
 
@@ -81,16 +77,14 @@ def read(id):
 # [START update]
 def update(data, id=None):
     if id:
-        key = ndb.Key('Book', int(id))
-        book = key.get()
+        key = ndb.Key('Album', int(id))
+        album = key.get()
     else:
-        book = Book()
-    book.author = data['author']
-    book.description = data['description']
-    book.publishedDate = data['publishedDate']
-    book.title = data['title']
-    book.put()
-    return from_datastore(book)
+        album = Album()
+    album.artist = data['artist']
+    album.title = data['title']
+    album.put()
+    return from_datastore(album)
 
 create = update
 # [END update]
@@ -98,6 +92,6 @@ create = update
 
 # [START delete]
 def delete(id):
-    key = ndb.Key('Book', int(id))
+    key = ndb.Key('Album', int(id))
     key.delete()
 # [END delete]
