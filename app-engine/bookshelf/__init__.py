@@ -36,9 +36,9 @@ def create_app(config, debug=False, testing=False, config_overrides=None):
         model = get_model()
         model.init_app(app)
 
-    # Register the Bookshelf CRUD blueprint.
+    # Register the Gallery CRUD blueprint.
     from .crud import crud
-    app.register_blueprint(crud, url_prefix='/books')
+    app.register_blueprint(crud, url_prefix='/albums')
 
     # Add a default root route.
     @app.route("/")
