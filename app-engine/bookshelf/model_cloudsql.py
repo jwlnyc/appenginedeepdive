@@ -35,39 +35,37 @@ def from_sql(row):
 
 
 # [START model]
-class Book(db.Model):
-    __tablename__ = 'books'
+class Album(db.Model):
+    __tablename__ = 'albums'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
-    author = db.Column(db.String(255))
-    publishedDate = db.Column(db.String(255))
+    artist = db.Column(db.String(255))
     imageUrl = db.Column(db.String(255))
-    description = db.Column(db.String(255))
     createdBy = db.Column(db.String(255))
     createdById = db.Column(db.String(255))
 
     def __repr__(self):
-        return "<Book(title='%s', author=%s)" % (self.title, self.author)
+        return "<Album(title='%s', artist=%s)" % (self.title, self.artist)
 # [END model]
 
 
 # [START list]
 def list(limit=10, cursor=None):
     cursor = int(cursor) if cursor else 0
-    query = (Book.query
-             .order_by(Book.title)
+    query = (Album.query
+             .order_by(Album.title)
              .limit(limit)
              .offset(cursor))
-    books = builtin_list(map(from_sql, query.all()))
-    next_page = cursor + limit if len(books) == limit else None
-    return (books, next_page)
+    albums = builtin_list(map(from_sql, query.all()))
+    next_page = cursor + limit if len(albums) == limit else None
+    return (albums, next_page)
 # [END list]
 
 
 # [START read]
 def read(id):
-    result = Book.query.get(id)
+    result = Album.query.get(id)
     if not result:
         return None
     return from_sql(result)
@@ -76,25 +74,25 @@ def read(id):
 
 # [START create]
 def create(data):
-    book = Book(**data)
-    db.session.add(book)
+    album = Album(**data)
+    db.session.add(album)
     db.session.commit()
-    return from_sql(book)
+    return from_sql(album)
 # [END create]
 
 
 # [START update]
 def update(data, id):
-    book = Book.query.get(id)
+    album = Album.query.get(id)
     for k, v in data.items():
-        setattr(book, k, v)
+        setattr(album, k, v)
     db.session.commit()
-    return from_sql(book)
+    return from_sql(album)
 # [END update]
 
 
 def delete(id):
-    Book.query.filter_by(id=id).delete()
+    Album.query.filter_by(id=id).delete()
     db.session.commit()
 
 
