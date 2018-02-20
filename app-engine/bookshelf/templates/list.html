@@ -26,18 +26,18 @@
 
 {% for book in books %}
 <div class="media">
-  <a href="/books/{{book.id}}">
+  <a href="/albums/{{album.id}}">
     <div class="media-left">
       <img src="https://storage.googleapis.com/cloud-training/CP100/Bookshelf/bookplaceholder.jpg">
     </div>
     <div class="media-body">
-      <h4>{{book.title}}</h4>
-      <p>{{book.author}}</p>
+      <h4>{{album.title}}</h4>
+      <p>{{album.author}}</p>
     </div>
   </a>
 </div>
 {% else %}
-<p>No books found</p>
+<p>No albums found</p>
 {% endfor %}
 
 {% if next_page_token %}
