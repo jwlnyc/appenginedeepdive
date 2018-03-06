@@ -18,29 +18,34 @@
 
 {% block content %}
 
-<h3>Album</h3>
+<h3>Albums</h3>
+<a href="/albums/add" class="btn btn-success btn-sm">
+  <i class="glyphicon glyphicon-plus"></i>
+  Add album
+</a>
 
-<div class="btn-group">
-  <a href="/albums/{{album.id}}/edit" class="btn btn-primary btn-sm">
-    <i class="glyphicon glyphicon-edit"></i>
-    Edit book
-  </a>
-  <a href="/albums/{{album.id}}/delete" class="btn btn-danger btn-sm">
-    <i class="glyphicon glyphicon-trash"></i>
-    Delete album
-  </a>
-</div>
-
+{% for album in albums %}
 <div class="media">
+  <a href="/albums/{{album.id}}">
   <div class="media-left">
-    <img class="album-image" src="https://storage.googleapis.com/cloud-training/CP100/Bookshelf/bookplaceholder.jpg">
+    <img class="album-image" src="{{album.cover}}">
   </div>
-  <div class="media-body">
-    <h4 class="album-title">
-      {{album.title}}
-    </h4>
-    <h5 class="album-author">By {{album.artist|default('Unknown', True)}}</h5>
-  </div>
+    <div class="media-body">
+      <h4>{{album.title}}</h4>
+      <p>{{album.artist}}</p>
+    </div>
+  </a>
 </div>
+{% else %}
+<p>No albums found</p>
+{% endfor %}
+
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
 
 {% endblock %}

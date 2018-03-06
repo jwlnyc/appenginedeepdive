@@ -28,6 +28,7 @@ def init_app(app):
 class Album(ndb.Model):
     artist = ndb.StringProperty()
     title = ndb.StringProperty()
+    cover = ndb.StringProperty()
 # [END model]
 
 
@@ -50,6 +51,7 @@ def from_datastore(entity):
     album['id'] = entity.key.id()
     album['artist'] = entity.artist
     album['title'] = entity.title
+    album['cover'] = entity.cover
     return album
 # [END from_datastore]
 
@@ -83,6 +85,7 @@ def update(data, id=None):
         album = Album()
     album.artist = data['artist']
     album.title = data['title']
+    album.cover = data['cover']
     album.put()
     return from_datastore(album)
 
